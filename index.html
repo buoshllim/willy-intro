@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>아이 엠 송경현</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Noto+Sans+KR:wght@300;400;700&display=swap');
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
-      --bg:      #f7f6f3;
-      --fg:      #1a1a1a;
-      --muted:   #888;
-      --line:    #e0ddd8;
-      --card:    #ffffff;
-      --hi:      #c9f0da;
-      --hi2:     #fde68a;
-      --ok:      #d1fae5;
-      --ok-t:    #065f46;
-      --no:      #fee2e2;
-      --no-t:    #991b1b;
+      --bg: #f7f6f3;
+      --fg: #1a1a1a;
+      --muted: #888;
+      --line: #e0ddd8;
+      --card: #ffffff;
+      --hi: #c9f0da;
+      --hi2: #fde68a;
+      --ok: #d1fae5;
+      --ok-t: #065f46;
+      --no: #fee2e2;
+      --no-t: #991b1b;
     }
 
     body {
@@ -33,7 +40,11 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    .deck { width: 100%; height: 100vh; position: relative; }
+    .deck {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+    }
 
     .slide {
       position: absolute;
@@ -48,260 +59,709 @@
       transform: translateX(28px);
       transition: opacity 0.42s ease, transform 0.42s ease;
     }
-    .slide.active { opacity: 1; transform: translateX(0); pointer-events: all; }
-    .slide.out    { opacity: 0; transform: translateX(-28px); }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: all;
+    }
+
+    .slide.out {
+      opacity: 0;
+      transform: translateX(-28px);
+    }
 
     /* ── Global UI ── */
     .pbar {
-      position: fixed; top: 0; left: 0;
-      height: 3px; background: var(--fg);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--fg);
       border-radius: 0 2px 2px 0;
-      transition: width 0.5s ease; z-index: 300;
+      transition: width 0.5s ease;
+      z-index: 300;
     }
+
     .counter {
-      position: fixed; top: 28px; right: 40px;
-      font-size: 12px; color: var(--muted);
-      letter-spacing: 0.08em; z-index: 200;
+      position: fixed;
+      top: 28px;
+      right: 40px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      z-index: 200;
     }
+
     .tag {
-      font-size: 11px; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
       margin-bottom: 22px;
     }
 
     /* ── Nav ── */
     .nav {
-      position: fixed; bottom: 32px; left: 50%;
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
       transform: translateX(-50%);
-      display: flex; align-items: center; gap: 18px; z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      z-index: 200;
     }
+
     .nav button {
-      background: none; border: 1.5px solid var(--fg);
-      color: var(--fg); width: 38px; height: 38px;
-      border-radius: 50%; cursor: pointer; font-size: 14px;
-      display: flex; align-items: center; justify-content: center;
+      background: none;
+      border: 1.5px solid var(--fg);
+      color: var(--fg);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: background 0.2s, color 0.2s;
     }
-    .nav button:hover { background: var(--fg); color: var(--bg); }
-    .nav button:disabled { opacity: 0.2; cursor: default; }
-    .dots { display: flex; gap: 8px; }
+
+    .nav button:hover {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    .nav button:disabled {
+      opacity: 0.2;
+      cursor: default;
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+
     .dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--line); cursor: pointer;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--line);
+      cursor: pointer;
       transition: background 0.3s, width 0.3s;
     }
-    .dot.active { background: var(--fg); width: 22px; border-radius: 4px; }
+
+    .dot.active {
+      background: var(--fg);
+      width: 22px;
+      border-radius: 4px;
+    }
 
     /* ── Shared ── */
-    .hi  { background: var(--hi);  padding: 0 5px; border-radius: 4px; }
-    .hi2 { background: var(--hi2); padding: 0 5px; border-radius: 4px; }
+    .hi {
+      background: var(--hi);
+      padding: 0 5px;
+      border-radius: 4px;
+    }
+
+    .hi2 {
+      background: var(--hi2);
+      padding: 0 5px;
+      border-radius: 4px;
+    }
 
     .kw-card {
-      background: var(--card); border: 1.5px solid var(--line);
-      border-radius: 16px; padding: 22px 18px;
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      padding: 22px 18px;
       transition: border-color 0.2s, transform 0.2s;
     }
-    .kw-card:hover { border-color: var(--fg); transform: translateY(-3px); }
-    .kw-card .emoji { font-size: 24px; margin-bottom: 10px; }
-    .kw-card .kw-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-    .kw-card .kw-desc { font-size: 12.5px; color: #555; line-height: 1.55; font-weight: 300; }
+
+    .kw-card:hover {
+      border-color: var(--fg);
+      transform: translateY(-3px);
+    }
+
+    .kw-card .emoji {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .kw-card .kw-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .kw-card .kw-desc {
+      font-size: 12.5px;
+      color: #555;
+      line-height: 1.55;
+      font-weight: 300;
+    }
 
     /* ════════════════════════
        SLIDE 1 — COVER
     ════════════════════════ */
-    #s1 .name-wrap { position: relative; display: inline-block; margin-bottom: 20px; }
+    #s1 .name-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
     #s1 .name {
       font-size: clamp(72px, 11vw, 128px);
-      font-weight: 900; letter-spacing: -0.04em;
-      line-height: 1; position: relative; z-index: 1;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
     }
+
     #s1 .name-bg {
-      position: absolute; bottom: 6px; left: -4px; right: -4px;
-      height: 22px; background: var(--hi); border-radius: 6px;
-      z-index: 0; width: 0;
-      animation: grow-bg 0.9s 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+      position: absolute;
+      bottom: 6px;
+      left: -4px;
+      right: -4px;
+      height: 22px;
+      background: var(--hi);
+      border-radius: 6px;
+      z-index: 0;
+      width: 0;
+      animation: grow-bg 0.9s 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
-    @keyframes grow-bg { to { width: calc(100% + 8px); } }
+
+    @keyframes grow-bg {
+      to {
+        width: calc(100% + 8px);
+      }
+    }
 
     #s1 .tagline {
-      font-size: 16px; font-weight: 300; color: var(--muted);
-      text-align: center; line-height: 1.7; margin-bottom: 28px;
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.7;
+      margin-bottom: 28px;
     }
-    #s1 .pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+    #s1 .pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     .pill {
-      background: var(--card); border: 1.5px solid var(--line);
-      border-radius: 999px; padding: 7px 16px; font-size: 13px;
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 16px;
+      font-size: 13px;
     }
+
     #s1 .scroll-hint {
-      position: absolute; bottom: 90px;
-      font-size: 11px; letter-spacing: 0.14em;
-      color: var(--muted); text-transform: uppercase;
+      position: absolute;
+      bottom: 90px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-transform: uppercase;
       animation: blink 2s infinite;
     }
-    @keyframes blink { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: .3
+      }
+
+      50% {
+        opacity: 1
+      }
+    }
 
     /* ════════════════════════
        SLIDE 2 — POSITIONING
     ════════════════════════ */
-    #s2 { align-items: center; max-width: 900px; width: 100%; margin: 0 auto; }
+    #s2 {
+      align-items: center;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
     #s2 .big-q {
       font-size: clamp(24px, 4vw, 46px);
-      font-weight: 700; letter-spacing: -0.03em;
-      line-height: 1.2; margin-bottom: 26px; text-align: center;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 26px;
+      text-align: center;
     }
-    #s2 .three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; width: 100%; }
+
+    #s2 .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      width: 100%;
+    }
 
     /* ════════════════════════
        SLIDE 3 — TIMELINE
     ════════════════════════ */
     #s3 {
-      align-items: flex-start; max-width: 860px; width: 100%; margin: 0 auto;
-      justify-content: flex-start; padding-top: 72px; padding-bottom: 108px;
+      align-items: flex-start;
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+      justify-content: flex-start;
+      padding-top: 72px;
+      padding-bottom: 108px;
       overflow-y: auto;
     }
-    #s3 .tag { position: sticky; top: 0; background: var(--bg); padding: 4px 0 18px; z-index: 5; }
 
-    .tl { position: relative; padding-left: 20px; }
+    #s3 .tag {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      padding: 4px 0 18px;
+      z-index: 5;
+    }
+
+    .tl {
+      position: relative;
+      padding-left: 20px;
+    }
+
     .tl::before {
-      content: ''; position: absolute; left: 5px; top: 8px; bottom: 32px;
-      width: 1.5px; background: var(--line);
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 8px;
+      bottom: 32px;
+      width: 1.5px;
+      background: var(--line);
     }
-    .tl-item { position: relative; padding: 0 0 26px 36px; }
+
+    .tl-item {
+      position: relative;
+      padding: 0 0 26px 36px;
+    }
+
     .tl-dot {
-      position: absolute; left: -2px; top: 6px;
-      width: 12px; height: 12px; border-radius: 50%;
-      background: var(--bg); border: 2px solid var(--line);
+      position: absolute;
+      left: -2px;
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--line);
     }
-    .tl-item.key .tl-dot { background: var(--fg); border-color: var(--fg); }
+
+    .tl-item.key .tl-dot {
+      background: var(--fg);
+      border-color: var(--fg);
+    }
+
     .tl-year {
-      font-size: 11px; letter-spacing: 0.15em;
-      color: var(--muted); text-transform: uppercase; margin-bottom: 4px;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
     }
-    .tl-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 6px; line-height: 1.35; }
-    .tl-desc { font-size: 13px; color: #555; line-height: 1.65; font-weight: 300; max-width: 620px; }
+
+    .tl-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .tl-desc {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.65;
+      font-weight: 300;
+      max-width: 620px;
+    }
+
     .tl-chip {
-      display: inline-block; margin-top: 8px;
-      background: var(--hi); border-radius: 999px;
-      padding: 3px 12px; font-size: 11px; font-weight: 600;
+      display: inline-block;
+      margin-top: 8px;
+      background: var(--hi);
+      border-radius: 999px;
+      padding: 3px 12px;
+      font-size: 11px;
+      font-weight: 600;
     }
-    .tl-chip.warm { background: var(--hi2); }
+
+    .tl-chip.warm {
+      background: var(--hi2);
+    }
 
     /* ════════════════════════
        SLIDE 4 — AI TF
     ════════════════════════ */
-    #s4 { max-width: 840px; width: 100%; margin: 0 auto; }
+    #s4 {
+      max-width: 840px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
     #s4 .big-q {
       font-size: clamp(26px, 4vw, 46px);
-      font-weight: 700; letter-spacing: -0.03em;
-      line-height: 1.2; margin-bottom: 26px; text-align: center;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 26px;
+      text-align: center;
     }
-    .tf-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; width: 100%; margin-bottom: 16px; }
+
+    .tf-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
     .tf-card {
-      background: var(--card); border: 1.5px solid var(--line);
-      border-radius: 16px; padding: 20px 16px;
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      padding: 20px 16px;
     }
-    .tf-card.core { border-color: var(--fg); border-width: 2px; }
+
+    .tf-card.core {
+      border-color: var(--fg);
+      border-width: 2px;
+    }
+
     .tf-lbl {
-      display: inline-block; font-size: 10px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      background: var(--hi); border-radius: 999px;
-      padding: 3px 10px; margin-bottom: 10px;
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: var(--hi);
+      border-radius: 999px;
+      padding: 3px 10px;
+      margin-bottom: 10px;
     }
-    .tf-card.core .tf-lbl { background: var(--fg); color: var(--bg); }
-    .tf-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 10px; }
-    .tf-card ul { list-style: none; }
+
+    .tf-card.core .tf-lbl {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    .tf-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+
+    .tf-card ul {
+      list-style: none;
+    }
+
     .tf-card ul li {
-      font-size: 12px; color: #555; font-weight: 300;
-      padding: 5px 0; border-bottom: 1px solid var(--line); line-height: 1.4;
+      font-size: 12px;
+      color: #555;
+      font-weight: 300;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--line);
+      line-height: 1.4;
     }
-    .tf-card ul li:last-child { border: none; }
+
+    .tf-card ul li:last-child {
+      border: none;
+    }
+
     .tf-note {
-      background: var(--card); border: 1.5px solid var(--line);
-      border-radius: 14px; padding: 13px 17px;
-      font-size: 13px; color: #555; line-height: 1.65; width: 100%;
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 13px 17px;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.65;
+      width: 100%;
     }
-    .tf-note strong { color: var(--fg); }
+
+    .tf-note strong {
+      color: var(--fg);
+    }
 
     /* ════════════════════════
        SLIDE 5 — BUILDER
     ════════════════════════ */
-    #s5 { max-width: 840px; width: 100%; margin: 0 auto; }
+    #s5 {
+      max-width: 840px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
     #s5 .big-q {
       font-size: clamp(24px, 3.5vw, 40px);
-      font-weight: 700; letter-spacing: -0.03em;
-      line-height: 1.2; margin-bottom: 22px; text-align: center;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 22px;
+      text-align: center;
     }
-    .builder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
-    .b-card { background: var(--card); border: 1.5px solid var(--line); border-radius: 16px; padding: 20px 18px; }
+
+    .builder-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .b-card {
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      padding: 20px 18px;
+    }
+
     .b-head {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--muted);
-      margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--line);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
     }
-    .b-item { margin-bottom: 14px; }
-    .b-item-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-    .b-item-desc { font-size: 12.5px; color: #555; line-height: 1.6; font-weight: 300; }
+
+    .b-item {
+      margin-bottom: 14px;
+    }
+
+    .b-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .b-item-desc {
+      font-size: 12.5px;
+      color: #555;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
     .b-link {
-      display: inline-block; margin-top: 5px;
-      font-size: 11.5px; color: var(--fg); text-decoration: none;
-      font-weight: 600; background: var(--hi);
-      border-radius: 999px; padding: 2px 10px;
+      display: inline-block;
+      margin-top: 5px;
+      font-size: 11.5px;
+      color: var(--fg);
+      text-decoration: none;
+      font-weight: 600;
+      background: var(--hi);
+      border-radius: 999px;
+      padding: 2px 10px;
     }
+
     .b-stack {
-      margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line);
-      font-size: 11.5px; color: var(--muted); line-height: 1.8;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.8;
     }
 
     /* ════════════════════════
        SLIDE 6 — SIMULATION
     ════════════════════════ */
-    #s6 { max-width: 800px; width: 100%; margin: 0 auto; }
+    #s6 {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
     #s6 .big-q {
       font-size: clamp(22px, 3.2vw, 40px);
-      font-weight: 700; letter-spacing: -0.03em;
-      line-height: 1.2; margin-bottom: 6px; text-align: center;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      text-align: center;
     }
-    .sim-sub { font-size: 13px; color: var(--muted); margin-bottom: 18px; text-align: center; }
-    .path-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; width: 100%; margin-bottom: 14px; }
+
+    .sim-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .path-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 14px;
+    }
+
     .path-btn {
-      background: var(--card); border: 1.5px solid var(--line);
-      border-radius: 14px; padding: 16px 10px; cursor: pointer;
-      font-family: 'Inter','Noto Sans KR',sans-serif;
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 10px;
+      cursor: pointer;
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
       transition: border-color 0.2s, transform 0.15s, background 0.2s;
       text-align: center;
     }
-    .path-btn:hover { border-color: var(--fg); transform: translateY(-2px); }
-    .path-btn.alt { border-color: var(--fg); background: var(--fg); color: var(--bg); }
-    .path-btn.real { border-color: transparent; background: var(--hi); }
-    .pb-icon { font-size: 22px; margin-bottom: 6px; }
-    .pb-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.5; margin-bottom: 3px; }
-    .pb-title { font-size: 13px; font-weight: 700; }
+
+    .path-btn:hover {
+      border-color: var(--fg);
+      transform: translateY(-2px);
+    }
+
+    .path-btn.alt {
+      border-color: var(--fg);
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    .path-btn.real {
+      border-color: transparent;
+      background: var(--hi);
+    }
+
+    .pb-icon {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .pb-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 3px;
+    }
+
+    .pb-title {
+      font-size: 13px;
+      font-weight: 700;
+    }
 
     .sim-box {
-      width: 100%; background: var(--card);
-      border: 1.5px solid var(--line); border-radius: 16px;
-      padding: 18px 20px; display: none;
+      width: 100%;
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 20px;
+      display: none;
       animation: fadeUp 0.3s ease forwards;
     }
-    .sim-box.vis { display: block; }
-    .sim-box.real-bg { background: #edfff5; border-color: #7de0ad; }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
 
-    .sim-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
-    .sim-traj { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 10px; }
-    .sim-step { font-size: 12px; padding: 3px 11px; background: #f0f0ee; border-radius: 999px; font-weight: 500; }
-    .sim-step.hi { background: var(--hi); }
-    .sim-arrow { font-size: 13px; color: var(--muted); }
-    .sim-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-    .sim-tag { font-size: 11.5px; padding: 3px 11px; border-radius: 999px; font-weight: 500; }
-    .sim-tag.ok { background: var(--ok); color: var(--ok-t); }
-    .sim-tag.no { background: var(--no); color: var(--no-t); }
-    .sim-verdict { font-size: 13px; color: #555; line-height: 1.7; border-top: 1px solid var(--line); padding-top: 10px; }
+    .sim-box.vis {
+      display: block;
+    }
+
+    .sim-box.real-bg {
+      background: #edfff5;
+      border-color: #7de0ad;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .sim-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .sim-traj {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .sim-step {
+      font-size: 12px;
+      padding: 3px 11px;
+      background: #f0f0ee;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    .sim-step.hi {
+      background: var(--hi);
+    }
+
+    .sim-arrow {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .sim-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .sim-tag {
+      font-size: 11.5px;
+      padding: 3px 11px;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    .sim-tag.ok {
+      background: var(--ok);
+      color: var(--ok-t);
+    }
+
+    .sim-tag.no {
+      background: var(--no);
+      color: var(--no-t);
+    }
+
+    .sim-verdict {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.7;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+    }
 
     /* ════════════════════════
        SLIDE 7 — CLOSING
     ════════════════════════ */
-    #s7 { text-align: center; }
+    #s7 {
+      text-align: center;
+    }
+
     #s7 .big-thanks {
       font-size: clamp(40px, 7vw, 80px);
       font-weight: 900;
@@ -309,370 +769,394 @@
       line-height: 1;
       margin-bottom: 36px;
     }
+
     #s7 .contact-row {
-      display: flex; gap: 24px;
-      justify-content: center; flex-wrap: wrap;
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
       margin-bottom: 48px;
     }
+
     .contact-pill {
-      display: flex; align-items: center; gap: 8px;
-      border: 1.5px solid var(--line); border-radius: 999px;
-      padding: 10px 20px; font-size: 14px;
-      color: var(--fg); text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 14px;
+      color: var(--fg);
+      text-decoration: none;
       transition: border-color 0.2s, background 0.2s;
     }
-    .contact-pill:hover { border-color: var(--fg); background: var(--hi); }
-    .sub-msg { font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
+
+    .contact-pill:hover {
+      border-color: var(--fg);
+      background: var(--hi);
+    }
+
+    .sub-msg {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
   </style>
 </head>
+
 <body>
 
-<div class="pbar" id="pbar"></div>
-<div class="counter"><span id="cur">1</span> / <span id="tot">7</span></div>
+  <div class="pbar" id="pbar"></div>
+  <div class="counter"><span id="cur">1</span> / <span id="tot">7</span></div>
 
-<div class="deck">
+  <div class="deck">
 
-  <!-- ── SLIDE 1 : COVER ── -->
-  <section class="slide active" id="s1">
-    <div class="tag"><strong>사장님 안녕하세요!</strong></div>
-    <div class="tag">2026 · Career 1 on 1 · SK Square HR</div>
-    <div class="name-wrap">
-      <div class="name-bg"></div>
-      <div class="name">송경현</div>
-    </div>
-    <div class="tagline">
-      HR Master도 아니고, 개발자도 아니고, AI Market Top도 아니지만<br>
-      그 세 개를 모두 해보고 있습니다 👋
-    </div>
-    <div class="pills">
-      <div class="pill">💰 SKT 인턴 2회</div>
-      <div class="pill">💰 SCM/구매 6년</div>
-      <div class="pill">🏢 HR 10년차</div>
-      <div class="pill">🤖 AI Board 겸 Lover</div>
-      <div class="pill">🦞 AI 친구와 소소한 개발 취미</div>
-    </div>
-    <div class="scroll-hint">→ Press → or click to continue</div>
-  </section>
+    <!-- ── SLIDE 1 : COVER ── -->
+    <section class="slide active" id="s1">
+      <div class="tag"><strong>사장님 안녕하세요!</strong></div>
+      <div class="tag">2026 · Career 1 on 1 · SK Square HR</div>
+      <div class="name-wrap">
+        <div class="name-bg"></div>
+        <div class="name">송경현</div>
+      </div>
+      <div class="tagline">
+        HR Master도 아니고, 개발자도 아니고, AI Market Top도 아니지만<br>
+        그 세 개를 모두 해보고 있습니다 👋
+      </div>
+      <div class="pills">
+        <div class="pill">💰 SKT 인턴 2회</div>
+        <div class="pill">💰 SCM/구매 6년</div>
+        <div class="pill">🏢 HR 10년차</div>
+        <div class="pill">🤖 AI Board 겸 Lover</div>
+        <div class="pill">🦞 AI 친구와 소소한 개발 취미</div>
+      </div>
+      <div class="scroll-hint">→ Press → or click to continue</div>
+    </section>
 
-  <!-- ── SLIDE 2 : POSITIONING ── -->
-  <section class="slide" id="s2">
-    <div class="tag">제 소개를 간단히 적어 보았습니다</div>
-    <div class="big-q">
-      명함엔 <span class="hi">HR</span>이라고 적혀 있지만<br>
-      호기심에 자동화도 해보고<br>
-      아들과 <span class="hi2">입코딩</span>으로 게임도 만들어 봅니다.
-    </div>
-    <div class="three-col">
-      <div class="kw-card">
-        <div class="emoji">🗂️</div>
-        <div class="kw-title">HR 전체를 한 번씩 훑어봄</div>
-        <div class="kw-desc">채용부터 평가·보상·EMD까지. 스퀘어에 온 이후로 HR이 어떻게 돌아가는지 전체 구조를 경험했습니다.</div>
+    <!-- ── SLIDE 2 : POSITIONING ── -->
+    <section class="slide" id="s2">
+      <div class="tag">제 소개를 간단히 적어 보았습니다</div>
+      <div class="big-q">
+        명함엔 <span class="hi">HR</span>이라고 적혀 있지만<br>
+        호기심에 자동화도 해보고<br>
+        아들과 <span class="hi2">입코딩</span>으로 게임도 만들어 봅니다.
       </div>
-      <div class="kw-card">
-        <div class="emoji">⚙️</div>
-        <div class="kw-title">직접 만들고 돌려봄</div>
-        <div class="kw-desc">SKT에서 HR AI/DT 업무를 해보았고, 지금은 소소하게 HR 뉴스 수집과 투자 판단 자동화를 실제로 해보고 있습니다. AI는 꼭 경험해 봐야 속이 시원합니다.</div>
-      </div>
-      <div class="kw-card">
-        <div class="emoji">🌐</div>
-        <div class="kw-title">기획부터 개발/배포까지</div>
-        <div class="kw-desc">AI 덕에 취미가 생겼습니다. 자동화는 물론 게임까지. 배포하고 상상을 실현해보고 있습니다. 지금 이 슬라이드도 Claude Code 함께 만들어서 온라인에 배포한 작품입니다.(<em>바이브코딩이라는..</em>🤤)</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── SLIDE 3 : TIMELINE ── -->
-  <section class="slide" id="s3">
-    <div class="tag">짧은 기간이지만 이러한 길을 걸어왔습니다</div>
-    <div class="tl">
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2009</div>
-        <div class="tl-title">SKT 상생 인턴(SK컴즈 e-Biz 개발팀 인턴) · 데이터 분류/라벨링/정제</div>
-        <div class="tl-desc">처음으로 "정제 안 된 데이터는 쓸모없다"는 배움을 얻은 순간이었습니다.</div>
-        <div class="tl-chip">데이터를 대하는 자세</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2010 – 2011</div>
-        <div class="tl-title">SKT 세무팀 인턴('10) → 구매팀 정규직 입사('11)</div>
-        <div class="tl-desc">돈의 흐름을 느끼고 효율적/체계적 프로세스의 중요성을 배웠습니다.</div>
-        <div class="tl-chip">Input SUPEX의 시대</div>
-      </div>
-      <div class="tl-item key">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2017 ★ 가장 큰 변곡점</div>
-        <div class="tl-title">HR기획팀 & HR AI/DT팀</div>
-        <div class="tl-desc">비등급형 절대평가 체계를 설계·도입하고, <strong>분산된 Data를 HR DataLake로</strong> 모으고 분석했습니다.</div>
-        <div class="tl-chip">HR 담당자 → DT, AI와의 만남</div>
-      </div>
-      <div class="tl-item key">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2021.11</div>
-        <div class="tl-title">SK스퀘어 설립 멤버로 합류</div>
-        <div class="tl-desc">회사를 처음부터 세팅하는 경험. 채용·평가·보상·EMD·HRD·포트폴리오사 HR까지 경험했습니다.</div>
-        <div class="tl-chip">HR 전체 그림 퍼즐 맞추기</div>
-      </div>
-      <div class="tl-item key">
-        <div class="tl-dot"></div>
-        <div class="tl-year">2026 · 지금</div>
-        <div class="tl-title">HR 담당 PL + AI Board</div>
-        <div class="tl-desc">EMD·보상을 챙기며, 도메인(HR)과 기술(AI)을 연결하고 재설계 하는 것이 목표입니다.</div>
-        <div class="tl-chip warm">Connect & Rebuild</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── SLIDE 4 : AI TF ── -->
-  <section class="slide" id="s4">
-    <div class="tag">이제 AI로 해보려 하는 일</div>
-    <div class="big-q">한 곳을 깊게 파고, 작게 퍼뜨리고,<br><span class="hi">습관으로 굳히는 계획</span></div>
-    <div class="tf-row">
-      <div class="tf-card core">
-        <div class="tf-lbl">핵심 과제</div>
-        <div class="tf-title">🎯 Succession Agent</div>
-        <ul>
-          <li>HR Data 수집·정제·축적✨</li>
-          <li>Talent Profiling 고도화✨</li>
-          <li>구성원 성장과 육성을 지원</li>
-          <li>회사의 의사결정 보조</li>
-        </ul>
-      </div>
-      <div class="tf-card">
-        <div class="tf-lbl">확산 과제</div>
-        <div class="tf-title">⚡ 반복 업무 3가지 없애기</div>
-        <ul>
-          <li>HR 제도 질문 → 챗봇으로</li>
-          <li>근무 수동 등록 → 게이트 연동</li>
-          <li>위클리 작성 → 메일 로그 기반 정리</li>
-          <li>혹은 더 효과성 있는 어떤 것</li>
-        </ul>
-      </div>
-      <div class="tf-card">
-        <div class="tf-lbl">문화 확산</div>
-        <div class="tf-title">🌱 1주 1 AI</div>
-        <ul>
-          <li>AI 게시판에 하나씩 쌓기</li>
-          <li>프로젝트가 아닌 습관으로</li>
-          <li>업무가 아니어도, 흥미로운 소개라도</li>
-          <li>No 강제. 자발적으로 참여하고 퍼지게</li>
-        </ul>
-      </div>
-    </div>
-    <div class="tf-note">
-      💡 <strong>"누구나 그럴싸한 계획이 있다. AI에게 배신 당하기 전까지는"</strong> (하지만!) <br> ㅤ - 분명 예상치 못한 난관에 부딪히고, 결과가 소소한 수준에 그칠 가능성이 높지만.. <strong>그럼에도 불구하고!</strong>
-    </div>
-  </section>
-
-  <!-- ── SLIDE 5 : BUILDER ── -->
-  <section class="slide" id="s5">
-    <div class="tag">퇴근 후에 하는 일들</div>
-    <div class="big-q">"오히려, 유독 바빴던 날은 뭐라도 만들면<br> <span class="hi">힐링</span>이 되었습니다."</div>
-    <div class="builder-grid">
-      <div class="b-card">
-        <div class="b-head">🤖 개인 자동화 파이프라인</div>
-        <div class="b-item">
-          <div class="b-item-title">HR 뉴스</div>
-          <div class="b-item-desc">매일 아침 HR/노동 시장 변화와 주요 뉴스를 요약한 내용이 Telegram으로 도착.</div>
-          <a class="b-link" href="https://t.me/skhraibot" target="_blank">↗ 기업문화 HR ER News</a>
+      <div class="three-col">
+        <div class="kw-card">
+          <div class="emoji">🗂️</div>
+          <div class="kw-title">HR 전체를 한 번씩 훑어봄</div>
+          <div class="kw-desc">채용부터 평가·보상·EMD까지. 스퀘어에 온 이후로 HR이 어떻게 돌아가는지 전체 구조를 경험했습니다.</div>
         </div>
-        <br>
-        <div class="b-item">
-          <div class="b-item-title">회사 뉴스 모니터링 + 투자 판단 자동화</div>
-          <div class="b-item-desc">SK스퀘어·하이닉스 등 뉴스 수집 → 투자 대가의 시각을 종합하여 그 결과를 Telegram으로.</div>
-          <a class="b-link" href="https://t.me/insight_brief" target="_blank">↗ Insight Brief #</a>
+        <div class="kw-card">
+          <div class="emoji">⚙️</div>
+          <div class="kw-title">직접 만들고 돌려봄</div>
+          <div class="kw-desc">SKT에서 HR AI/DT 업무를 해보았고, 지금은 소소하게 HR 뉴스 수집과 투자 판단 자동화를 실제로 해보고 있습니다. 개인적으로 AI는 꼭 경험해 봐야
+            속이 시원합니다.</div>
         </div>
-        <div class="b-stack">Mac Mini · n8n · Claude Code · Remote-Control · Supabase · Telegram</div>
+        <div class="kw-card">
+          <div class="emoji">🌐</div>
+          <div class="kw-title">기획부터 개발/배포까지</div>
+          <div class="kw-desc">AI 덕에 취미가 생겼습니다. 자동화는 물론 게임까지. 배포하고 상상을 실현해보고 있습니다. 지금 이 슬라이드도 Claude Code 함께 만들어서 온라인에
+            배포한 작품입니다.(<em>바이브코딩이라는..</em>🤤)</div>
+        </div>
       </div>
-      <div class="b-card">
-        <div class="b-head">🎮 게임 개발 (문과생이 어디까지 가능할까?🤔)</div>
-        <div class="b-item">
-          <div class="b-item-title">Infinite Runner - Great Nature</div>
-          <div class="b-item-desc">(말로) 직접 만들고, (물어보고) Vercel에 배포하고,<br> (궁금해서) 게임 사이트 itch.io에 무료 공개.</div>
-          <a class="b-link" href="https://infinite-runner-great.vercel.app/" target="_blank">↗ infinite-runner-great.vercel.app</a>
+    </section>
+
+    <!-- ── SLIDE 3 : TIMELINE ── -->
+    <section class="slide" id="s3">
+      <div class="tag">짧은 기간이지만 이러한 길을 걸어왔습니다</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2009</div>
+          <div class="tl-title">SKT 상생 인턴(SK컴즈 e-Biz 개발팀 인턴) · 데이터 분류/라벨링/정제</div>
+          <div class="tl-desc">처음으로 "정제 안 된 데이터는 쓸모없다"는 배움을 얻은 순간이었습니다.</div>
+          <div class="tl-chip">데이터를 대하는 자세</div>
         </div>
-        <br>
-        <div class="b-item">
-          <div class="b-item-title">Poly Battle</div>
-          <div class="b-item-desc">(아들이) 원하는걸 말하고, (아빠가) 채팅으로 요청하고.<br> (언젠가) 이런 인터랙션을 업무에서도 할 수 있다면..😋</div>
-          <a class="b-link" href="https://polybattle.vercel.app/" target="_blank">↗ polybattle.vercel.app</a>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2010 – 2011</div>
+          <div class="tl-title">SKT 세무팀 인턴('10) → 구매팀 정규직 입사('11)</div>
+          <div class="tl-desc">돈의 흐름을 느끼고 효율적/체계적 프로세스의 중요성을 배웠습니다.</div>
+          <div class="tl-chip">Input SUPEX의 시대</div>
         </div>
-        <div class="b-stack">Google AI Studio · OpenClaw · GitHub · Vercel · Itch.io · Claude Cowork</div>
+        <div class="tl-item key">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2017 ★ 가장 큰 변곡점</div>
+          <div class="tl-title">HR기획팀 & HR AI/DT팀</div>
+          <div class="tl-desc">비등급형 절대평가 체계를 설계·도입하고, <strong>분산된 Data를 HR DataLake로</strong> 모으고 분석했습니다.</div>
+          <div class="tl-chip">HR 담당자 → DT, AI와의 만남</div>
+        </div>
+        <div class="tl-item key">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2021.11</div>
+          <div class="tl-title">SK스퀘어 설립 멤버로 합류</div>
+          <div class="tl-desc">회사를 처음부터 세팅하는 경험. 채용·평가·보상·EMD·HRD·포트폴리오사 HR까지 경험했습니다.</div>
+          <div class="tl-chip">HR 전체 그림 퍼즐 맞추기</div>
+        </div>
+        <div class="tl-item key">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2026 · 지금</div>
+          <div class="tl-title">HR 담당 PL + AI Board</div>
+          <div class="tl-desc">EMD·보상을 챙기며, 도메인(HR)과 기술(AI)을 연결하고 재설계 하는 것이 목표입니다.</div>
+          <div class="tl-chip warm">Connect & Rebuild</div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── SLIDE 6 : SIMULATION ── -->
-  <section class="slide" id="s6">
-    <div class="tag" style="margin-bottom:10px">재미로 보는 가상 Career 시뮬레이터</div>
-    <div class="big-q">AI와 얘기해 본 나의 Career</div>
-    <div class="sim-sub">각 Path별로 고민의 흔적을 남겨 보았습니다. 😅</div>
-    <div class="path-row">
-      <button class="path-btn" onclick="pickPath('a')">
-        <div class="pb-icon">🏃</div>
-        <div class="pb-lbl">Path A</div>
-        <div class="pb-title">HR만 계속 판다면</div>
-      </button>
-      <button class="path-btn" onclick="pickPath('b')">
-        <div class="pb-icon">💻</div>
-        <div class="pb-lbl">Path B</div>
-        <div class="pb-title">AI 개발자로 전환</div>
-      </button>
-      <button class="path-btn" onclick="pickPath('c')">
-        <div class="pb-icon">🤷</div>
-        <div class="pb-lbl">Path C ★ 일단 현재</div>
-        <div class="pb-title">(베컴처럼) 둘 다 하기</div>
-      </button>
-    </div>
-    <div class="sim-box" id="simBox">
-      <div class="sim-title" id="simTitle"></div>
-      <div class="sim-traj" id="simTraj"></div>
-      <div class="sim-tags" id="simTags"></div>
-      <div class="sim-verdict" id="simVerdict"></div>
-    </div>
-  </section>
+    <!-- ── SLIDE 4 : AI TF ── -->
+    <section class="slide" id="s4">
+      <div class="tag">이제 AI로 해보려 하는 일</div>
+      <div class="big-q">한 곳을 깊게 파고, 작게 퍼뜨리고,<br><span class="hi">습관으로 굳히는 계획</span></div>
+      <div class="tf-row">
+        <div class="tf-card core">
+          <div class="tf-lbl">핵심 과제</div>
+          <div class="tf-title">🎯 Succession Agent</div>
+          <ul>
+            <li>HR Data 수집·정제·축적✨</li>
+            <li>Talent Profiling 고도화✨</li>
+            <li>구성원 성장과 육성을 지원</li>
+            <li>회사의 의사결정 보조</li>
+          </ul>
+        </div>
+        <div class="tf-card">
+          <div class="tf-lbl">확산 과제</div>
+          <div class="tf-title">⚡ 반복 업무 3가지 없애기</div>
+          <ul>
+            <li>HR 제도 질문 → 챗봇으로</li>
+            <li>근무 수동 등록 → 게이트 연동</li>
+            <li>위클리 작성 → 메일 로그 기반 정리</li>
+            <li>혹은 더 효과성 있는 어떤 것</li>
+          </ul>
+        </div>
+        <div class="tf-card">
+          <div class="tf-lbl">문화 확산</div>
+          <div class="tf-title">🌱 1주 1 AI</div>
+          <ul>
+            <li>AI 게시판에 하나씩 쌓기</li>
+            <li>프로젝트가 아닌 습관으로</li>
+            <li>업무가 아니어도, 흥미로운 소개라도</li>
+            <li>No 강제. 자발적으로 참여하고 퍼지게</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tf-note">
+        💡 <strong>"누구나 그럴싸한 계획이 있다. AI에게 배신 당하기 전까지는"</strong> (하지만!) <br> ㅤ - 분명 예상치 못한 난관에 부딪히고, 결과가 소소한 수준에 그칠 가능성이
+        높지만.. <strong>그럼에도 불구하고!</strong>
+      </div>
+    </section>
 
-  <!-- ── SLIDE 7 : CLOSING ── -->
-  <section class="slide" id="s7">
-    <div class="tag">고민을 들어주셔서 🫡</div>
-    <div class="big-thanks">감사합니다<span style="color:var(--hi)">.</span></div>
-    <div class="contact-row">
-      <a class="contact-pill" href="mailto:skhyeon@sksquare.com">
-        ✉️ skhyeon@sksquare.com
-      </a>
-    </div>
-    <div class="sub-msg">← Use arrow keys or click to navigate ✨</div>
-  </section>
+    <!-- ── SLIDE 5 : BUILDER ── -->
+    <section class="slide" id="s5">
+      <div class="tag">퇴근 후에 하는 일들</div>
+      <div class="big-q">"오히려, 유독 바빴던 날은 뭐라도 만들면<br> <span class="hi">힐링</span>이 되었습니다."</div>
+      <div class="builder-grid">
+        <div class="b-card">
+          <div class="b-head">🤖 개인 자동화 파이프라인</div>
+          <div class="b-item">
+            <div class="b-item-title">HR 뉴스</div>
+            <div class="b-item-desc">매일 아침 HR/노동 시장 변화와 주요 뉴스를 요약한 내용이 Telegram으로 도착.</div>
+            <a class="b-link" href="https://t.me/skhraibot" target="_blank">↗ 기업문화 HR ER News</a>
+          </div>
+          <br>
+          <div class="b-item">
+            <div class="b-item-title">회사 뉴스 모니터링 + 투자 판단 자동화</div>
+            <div class="b-item-desc">SK스퀘어·하이닉스 등 뉴스 수집 → 투자 대가의 시각을 종합하여 그 결과를 Telegram으로.</div>
+            <a class="b-link" href="https://t.me/insight_brief" target="_blank">↗ Insight Brief #</a>
+          </div>
+          <div class="b-stack">Mac Mini · n8n · Claude Code · Remote-Control · Supabase · Telegram</div>
+        </div>
+        <div class="b-card">
+          <div class="b-head">🎮 게임 개발 (문과생이 어디까지 가능할까?🤔)</div>
+          <div class="b-item">
+            <div class="b-item-title">Infinite Runner - Great Nature</div>
+            <div class="b-item-desc">(말로) 직접 만들고, (물어보고) Vercel에 배포하고,<br> (궁금해서) 게임 사이트 itch.io에 무료 공개.</div>
+            <a class="b-link" href="https://infinite-runner-great.vercel.app/" target="_blank">↗
+              infinite-runner-great.vercel.app</a>
+          </div>
+          <br>
+          <div class="b-item">
+            <div class="b-item-title">Poly Battle</div>
+            <div class="b-item-desc">(아들이) 원하는걸 말하고, (아빠가) 채팅으로 요청하고.<br> (언젠가) 이런 인터랙션을 업무에서도 할 수 있다면..😋</div>
+            <a class="b-link" href="https://polybattle.vercel.app/" target="_blank">↗ polybattle.vercel.app</a>
+          </div>
+          <div class="b-stack">Google AI Studio · OpenClaw · GitHub · Vercel · Itch.io · Claude Cowork</div>
+        </div>
+      </div>
+    </section>
 
-</div>
+    <!-- ── SLIDE 6 : SIMULATION ── -->
+    <section class="slide" id="s6">
+      <div class="tag" style="margin-bottom:10px">재미로 보는 가상 Career 시뮬레이터</div>
+      <div class="big-q">AI와 얘기해 본 나의 Career</div>
+      <div class="sim-sub">각 Path별로 고민의 흔적을 남겨 보았습니다. 😅</div>
+      <div class="path-row">
+        <button class="path-btn" onclick="pickPath('a')">
+          <div class="pb-icon">🏃</div>
+          <div class="pb-lbl">Path A</div>
+          <div class="pb-title">HR만 계속 판다면</div>
+        </button>
+        <button class="path-btn" onclick="pickPath('b')">
+          <div class="pb-icon">💻</div>
+          <div class="pb-lbl">Path B</div>
+          <div class="pb-title">AI 개발자로 전환</div>
+        </button>
+        <button class="path-btn" onclick="pickPath('c')">
+          <div class="pb-icon">🤷</div>
+          <div class="pb-lbl">Path C ★ 일단 현재</div>
+          <div class="pb-title">(베컴처럼) 둘 다 하기</div>
+        </button>
+      </div>
+      <div class="sim-box" id="simBox">
+        <div class="sim-title" id="simTitle"></div>
+        <div class="sim-traj" id="simTraj"></div>
+        <div class="sim-tags" id="simTags"></div>
+        <div class="sim-verdict" id="simVerdict"></div>
+      </div>
+    </section>
 
-<nav class="nav">
-  <button id="prev" disabled>←</button>
-  <div class="dots" id="dots"></div>
-  <button id="next">→</button>
-</nav>
+    <!-- ── SLIDE 7 : CLOSING ── -->
+    <section class="slide" id="s7">
+      <div class="tag">고민을 들어주셔서 🫡</div>
+      <div class="big-thanks">감사합니다<span style="color:var(--hi)">.</span></div>
+      <div class="contact-row">
+        <a class="contact-pill" href="mailto:skhyeon@sksquare.com">
+          ✉️ skhyeon@sksquare.com
+        </a>
+      </div>
+      <div class="sub-msg">← Use arrow keys or click to navigate ✨</div>
+    </section>
 
-<script>
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const n = slides.length;
-  document.getElementById('tot').textContent = n;
+  </div>
 
-  const dotsEl = document.getElementById('dots');
-  slides.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', () => goto(i));
-    dotsEl.appendChild(d);
-  });
+  <nav class="nav">
+    <button id="prev" disabled>←</button>
+    <div class="dots" id="dots"></div>
+    <button id="next">→</button>
+  </nav>
 
-  let cur = 0, busy = false;
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const n = slides.length;
+    document.getElementById('tot').textContent = n;
 
-  function goto(i) {
-    if (busy || i === cur || i < 0 || i >= n) return;
-    busy = true;
-    const old = cur;
-    slides[old].classList.add('out');
-    setTimeout(() => {
-      slides[old].classList.remove('active','out');
-      cur = i;
-      slides[cur].classList.add('active');
-      updateUI();
-      setTimeout(() => { busy = false; }, 460);
-    }, 220);
-  }
-
-  function updateUI() {
-    document.getElementById('cur').textContent = cur + 1;
-    document.getElementById('prev').disabled = cur === 0;
-    document.getElementById('next').disabled = cur === n - 1;
-    document.getElementById('pbar').style.width = ((cur + 1) / n * 100) + '%';
-    dotsEl.querySelectorAll('.dot').forEach((d, i) => {
-      d.className = 'dot' + (i === cur ? ' active' : '');
+    const dotsEl = document.getElementById('dots');
+    slides.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => goto(i));
+      dotsEl.appendChild(d);
     });
-  }
 
-  document.getElementById('prev').addEventListener('click', () => goto(cur - 1));
-  document.getElementById('next').addEventListener('click', () => goto(cur + 1));
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goto(cur + 1);
-    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goto(cur - 1);
-  });
-  document.addEventListener('click', e => {
-    if (e.target.closest('.nav,.path-btn,a,.dot')) return;
-    goto(cur + 1);
-  });
-  let tx = null;
-  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
-  document.addEventListener('touchend', e => {
-    if (tx === null) return;
-    const dx = e.changedTouches[0].clientX - tx;
-    if (Math.abs(dx) > 50) goto(dx < 0 ? cur + 1 : cur - 1);
-    tx = null;
-  }, {passive:true});
+    let cur = 0, busy = false;
 
-  updateUI();
-
-  /* simulation */
-  const paths = {
-    a: {
-      title: 'Path A — HR만 계속 판다면',
-      traj: ['HR 기획 심화','HR 전문가','HR Director'],
-      hi: false,
-      tags: [
-        {t:'HR 깊이 ✓', ok:true},
-        {t:'HR 제도 설계 및 운영 전문성 ✓', ok:true},
-        {t:'"AI가 HR을 대체한다"는 말이 남 얘기가 아님(언젠가 대체될 나)', ok:false},
-        {t:'전문가가 되더라도, 평범한 전문가', ok:false},
-      ],
-      verdict:'훌륭한 HR 전문가가 될 수 있을지는 몰라도, 어딘가 헛헛할 것 같은.. 그리고 왠지 HR만 하기엔 좀 심심할 것 같은.. 🙂'
-    },
-    b: {
-      title: 'Path B — AI 개발자로 전환한다면',
-      traj: ['AI 부트캠프 6개월','고연령 주니어 개발자','이동 혹은 이직'],
-      hi: false,
-      tags: [
-        {t:'기술 실행력/구현력 ✓', ok:true},
-        {t:'10년 이상의 HR 경험 리셋', ok:false},
-        {t:'도메인 영역이 없는 초보 개발자', ok:false},
-        {t:'가성비 떨어지는 직원', ok:false},
-      ],
-      verdict:'기술은 생기겠지만, 그동안 쌓아온 HR 경험이라는 강점과 자아를 버리는 선택.. 😅'
-    },
-    c: {
-      title: 'Path C ★ — 현재의 선택: "계속 둘 다 하면 되나?"',
-      traj: ['HR × 데이터 → DataLake 구축 경험','HR × AI → AI Board','AI Agent 군단의 지휘자'],
-      hi: true,
-      tags: [
-        {t:'HR 전체 구조 이해 ✓', ok:true},
-        {t:'직접 만들고 배포 ✓', ok:true},
-        {t:'덕업일치 ✓', ok:true},
-        {t:'애매하지만 희귀한 조합 ✓', ok:true},
-      ],
-      verdict:'HR도 하고, AI도 하고, 기술도 좀 아는 사람. 이도 저도 아닐 수 있지만, 유니크한 조합을 가진 사람. 🎯'
+    function goto(i) {
+      if (busy || i === cur || i < 0 || i >= n) return;
+      busy = true;
+      const old = cur;
+      slides[old].classList.add('out');
+      setTimeout(() => {
+        slides[old].classList.remove('active', 'out');
+        cur = i;
+        slides[cur].classList.add('active');
+        updateUI();
+        setTimeout(() => { busy = false; }, 460);
+      }, 220);
     }
-  };
 
-  function pickPath(k) {
-    document.querySelectorAll('.path-btn').forEach(b => { b.className = 'path-btn'; });
-    const btns = document.querySelectorAll('.path-btn');
-    if (k==='a') btns[0].classList.add('alt');
-    if (k==='b') btns[1].classList.add('alt');
-    if (k==='c') btns[2].classList.add('real');
-    const p = paths[k];
-    document.getElementById('simTitle').textContent = p.title;
-    document.getElementById('simTraj').innerHTML = p.traj.map((s,i) =>
-      (i>0?'<span class="sim-arrow">→</span>':'')+
-      `<span class="sim-step${p.hi?' hi':''}">${s}</span>`
-    ).join('');
-    document.getElementById('simTags').innerHTML = p.tags.map(t =>
-      `<span class="sim-tag ${t.ok?'ok':'no'}">${t.t}</span>`
-    ).join('');
-    document.getElementById('simVerdict').textContent = p.verdict;
-    const box = document.getElementById('simBox');
-    box.className = 'sim-box'+(p.hi?' real-bg':'');
-    void box.offsetWidth;
-    box.classList.add('vis');
-  }
-</script>
+    function updateUI() {
+      document.getElementById('cur').textContent = cur + 1;
+      document.getElementById('prev').disabled = cur === 0;
+      document.getElementById('next').disabled = cur === n - 1;
+      document.getElementById('pbar').style.width = ((cur + 1) / n * 100) + '%';
+      dotsEl.querySelectorAll('.dot').forEach((d, i) => {
+        d.className = 'dot' + (i === cur ? ' active' : '');
+      });
+    }
+
+    document.getElementById('prev').addEventListener('click', () => goto(cur - 1));
+    document.getElementById('next').addEventListener('click', () => goto(cur + 1));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goto(cur + 1);
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goto(cur - 1);
+    });
+    document.addEventListener('click', e => {
+      if (e.target.closest('.nav,.path-btn,a,.dot')) return;
+      goto(cur + 1);
+    });
+    let tx = null;
+    document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', e => {
+      if (tx === null) return;
+      const dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 50) goto(dx < 0 ? cur + 1 : cur - 1);
+      tx = null;
+    }, { passive: true });
+
+    updateUI();
+
+    /* simulation */
+    const paths = {
+      a: {
+        title: 'Path A — HR만 계속 판다면',
+        traj: ['HR 기획 심화', 'HR 전문가', 'HR Director'],
+        hi: false,
+        tags: [
+          { t: 'HR 깊이 ✓', ok: true },
+          { t: 'HR 제도 설계 및 운영 전문성 ✓', ok: true },
+          { t: '"AI가 HR을 대체한다"는 말이 남 얘기가 아님(언젠가 대체될 나)', ok: false },
+          { t: '전문가가 되더라도, 평범한 전문가', ok: false },
+        ],
+        verdict: '훌륭한 HR 전문가가 될 수 있을지는 몰라도, 어딘가 헛헛할 것 같은.. 그리고 왠지 HR만 하기엔 좀 심심할 것 같은.. 🙂'
+      },
+      b: {
+        title: 'Path B — AI 개발자로 전환한다면',
+        traj: ['AI 부트캠프 6개월', '고연령 주니어 개발자', '이동 혹은 이직'],
+        hi: false,
+        tags: [
+          { t: '기술 실행력/구현력 ✓', ok: true },
+          { t: '10년 이상의 HR 경험 리셋', ok: false },
+          { t: '도메인 영역이 없는 초보 개발자', ok: false },
+          { t: '가성비 떨어지는 직원', ok: false },
+        ],
+        verdict: '기술은 생기겠지만, 그동안 쌓아온 HR 경험이라는 강점과 자아를 버리는 선택.. 😅'
+      },
+      c: {
+        title: 'Path C ★ — 현재의 선택: "계속 둘 다 하면 되나?"',
+        traj: ['HR × 데이터 → DataLake 구축 경험', 'HR × AI → AI Board', 'AI Agent 군단의 지휘자'],
+        hi: true,
+        tags: [
+          { t: 'HR 전체 구조 이해 ✓', ok: true },
+          { t: '직접 만들고 배포 ✓', ok: true },
+          { t: '덕업일치 ✓', ok: true },
+          { t: '애매하지만 희귀한 조합 ✓', ok: true },
+        ],
+        verdict: 'HR도 하고, AI도 하고, 기술도 좀 아는 사람. 이도 저도 아닐 수 있지만, 유니크한 조합을 가진 사람. 🎯'
+      }
+    };
+
+    function pickPath(k) {
+      document.querySelectorAll('.path-btn').forEach(b => { b.className = 'path-btn'; });
+      const btns = document.querySelectorAll('.path-btn');
+      if (k === 'a') btns[0].classList.add('alt');
+      if (k === 'b') btns[1].classList.add('alt');
+      if (k === 'c') btns[2].classList.add('real');
+      const p = paths[k];
+      document.getElementById('simTitle').textContent = p.title;
+      document.getElementById('simTraj').innerHTML = p.traj.map((s, i) =>
+        (i > 0 ? '<span class="sim-arrow">→</span>' : '') +
+        `<span class="sim-step${p.hi ? ' hi' : ''}">${s}</span>`
+      ).join('');
+      document.getElementById('simTags').innerHTML = p.tags.map(t =>
+        `<span class="sim-tag ${t.ok ? 'ok' : 'no'}">${t.t}</span>`
+      ).join('');
+      document.getElementById('simVerdict').textContent = p.verdict;
+      const box = document.getElementById('simBox');
+      box.className = 'sim-box' + (p.hi ? ' real-bg' : '');
+      void box.offsetWidth;
+      box.classList.add('vis');
+    }
+  </script>
 </body>
+
 </html>
